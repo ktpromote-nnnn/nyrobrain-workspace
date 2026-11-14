@@ -1,0 +1,33 @@
+[project]
+name = "nyrobrain-repo"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "adrs>=1.14.0",
+    # 0.11.0 is the floor, not a preference. Seven reasons, oldest first: below
+    # 0.6.0 a paper run keeps its book only in memory, so every restart
+    # re-enters the position it already holds; below 0.6.1 `nyrobrain.prime`
+    # does not export `set_status`, which the generated OMS uses to mark its
+    # account Running on start and Stopped on the way out; below 0.7.0
+    # every trade is published with a positive quantity, so the Aegis trade
+    # feed shows each sell as a buy; below 0.7.1 the portfolio publisher
+    # never writes its target to Prime, so an OMS that polls for it waits on
+    # `never_published` forever; below 0.9.0 Bybit orders carry nautilus's
+    # broker code instead of Nyrobrain's; and below 0.10.0 `register_account`
+    # does not take `mode` or `environment`, so the account never records
+    # whether it is paper or live, or which exchange environment its keys are
+    # for; and below 0.11.0 ids are namespaced with `USER_ID`, which can hold
+    # the API key, so the key is published in every portfolio, OMS and alpha id.
+    "nyrobrain[execution,portfolio,prime,aegis]>=0.11.0",
+    "cybotrade-datasource>=0.1.9",
+    "httpx>=0.28.1",
+    "matplotlib>=3.10.8",
+    "polars>=1.39.3,<2.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

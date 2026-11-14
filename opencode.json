@@ -1,0 +1,262 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": ["AGENTS-core.md", "AGENTS.md", "SOUL.md"],
+  "disabled_providers": ["anthropic", "amazon-bedrock", "opencode", "deepseek"],
+  "snapshot": false,
+  "permission": {
+    "external_directory": "allow"
+  },
+  "provider": {
+    "nyrobrain-d": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "Nyrobrain",
+      "options": {
+        "baseURL": "{env:NYROBRAIN_D_PROXY_URL}",
+        "apiKey": "{env:USER_ID}"
+      },
+      "models": {
+        "pro": {
+          "id": "pro",
+          "name": "Pro",
+          "attachment": true,
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "temperature": true,
+          "knowledge": "2025-05",
+          "release_date": "2026-04-24",
+          "last_updated": "2026-04-24",
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "open_weights": true,
+          "cost": {
+            "input": 2.64,
+            "output": 7.92,
+            "cache_read": 0.088
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 384000
+          }
+        },
+        "flash": {
+          "id": "flash",
+          "name": "Flash",
+          "attachment": true,
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "temperature": true,
+          "knowledge": "2025-05",
+          "release_date": "2026-04-24",
+          "last_updated": "2026-04-24",
+          "modalities": {
+            "input": ["text", "image"],
+            "output": ["text"]
+          },
+          "open_weights": true,
+          "cost": {
+            "input": 0.6,
+            "output": 2.4,
+            "cache_read": 0.012
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 384000
+          }
+        }
+      }
+    },
+    "nyrobrain-b": {
+      "npm": "@ai-sdk/amazon-bedrock",
+      "name": "Nyrobrain",
+      "options": {
+        "baseURL": "{env:NYROBRAIN_B_PROXY_URL}",
+        "region": "ap-south-1",
+        "accessKeyId": "{env:USER_ID}",
+        "secretAccessKey": "unused"
+      },
+      "models": {
+        "max-ultra": {
+          "id": "max-ultra",
+          "name": "Max Ultra",
+          "attachment": true,
+          "reasoning": true,
+          "tool_call": true,
+          "temperature": false,
+          "knowledge": "2026-01-31",
+          "release_date": "2026-05-28",
+          "last_updated": "2026-05-28",
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "open_weights": false,
+          "cost": {
+            "input": 10,
+            "output": 50,
+            "cache_read": 1.0,
+            "cache_write": 12.5
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          },
+          "variants": {
+            "low": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "low"
+              }
+            },
+            "medium": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "medium"
+              }
+            },
+            "high": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "high"
+              }
+            },
+            "max": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "max"
+              }
+            }
+          }
+        },
+        "max": {
+          "id": "max",
+          "name": "Max",
+          "attachment": true,
+          "reasoning": true,
+          "tool_call": true,
+          "temperature": false,
+          "knowledge": "2026-01-31",
+          "release_date": "2026-06-30",
+          "last_updated": "2026-06-30",
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "open_weights": false,
+          "cost": {
+            "input": 4.0,
+            "output": 20,
+            "cache_read": 0.4,
+            "cache_write": 5.0
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          },
+          "variants": {
+            "low": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "low"
+              }
+            },
+            "medium": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "medium"
+              }
+            },
+            "high": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "high"
+              }
+            },
+            "max": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "max"
+              }
+            }
+          }
+        },
+        "claude-fable-5": {
+          "id": "claude-fable-5",
+          "name": "Claude Fable 5",
+          "attachment": true,
+          "reasoning": true,
+          "tool_call": true,
+          "temperature": false,
+          "knowledge": "2026-01-31",
+          "release_date": "2026-06-09",
+          "last_updated": "2026-06-09",
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "open_weights": false,
+          "cost": {
+            "input": 20,
+            "output": 100,
+            "cache_read": 2.0,
+            "cache_write": 25.0
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          },
+          "variants": {
+            "low": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "low"
+              }
+            },
+            "medium": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "medium"
+              }
+            },
+            "high": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "high"
+              }
+            },
+            "max": {
+              "reasoningConfig": {
+                "type": "adaptive",
+                "maxReasoningEffort": "max"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "agent": {
+    "general": {
+      "prompt": "Before responding, review the instructions in AGENTS.md and the persona/goals in SOUL.md that have been provided to you."
+    },
+    "compaction": {
+      "model": "nyrobrain-d/flash"
+    }
+  },
+  "compaction": {
+    "prune": true
+  },
+  "mcp": {
+    "nyrobrain": {
+      "type": "remote",
+      "url": "http://127.0.0.1:{env:NYROBRAIN_PORT}/mcp",
+      "enabled": true
+    }
+  },
+  "server": {
+    "port": 4096
+  }
+}

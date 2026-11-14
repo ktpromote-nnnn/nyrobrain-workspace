@@ -1,0 +1,33 @@
+# Patterns excluded from Nyrobrain's periodic workspace backup.
+# One pattern per line, gitignore-like syntax. Comments start with `#`.
+#
+# Backups are tar+gzip uploads to S3. Anything listed here is NOT shipped
+# to S3 — useful for large, regenerable artifacts that would blow past
+# the 4.5 GiB tarball cap.
+#
+# Defaults below assume the canonical Nyrobrain workspace layout. Add
+# your own patterns under "Project-specific" — they'll be honored on
+# every backup tick.
+
+# ────────────────────────────────────────────────────────────────────────
+# Regenerable outputs
+# ────────────────────────────────────────────────────────────────────────
+
+# Strategy grid-search results. Reproduce by re-running the backtest;
+# typically dozens of MB per strategy, easily into many GB for sweep jobs.
+results
+
+# Per-strategy report bundles. Re-render from data + strategy code.
+reports
+
+# ────────────────────────────────────────────────────────────────────────
+# Large raw data
+# ────────────────────────────────────────────────────────────────────────
+
+# Bulk downloaded datasets — refetchable from upstream APIs.
+data
+datasets
+
+# ────────────────────────────────────────────────────────────────────────
+# Project-specific (add your own below)
+# ────────────────────────────────────────────────────────────────────────

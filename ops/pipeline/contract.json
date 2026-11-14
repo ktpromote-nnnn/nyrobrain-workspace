@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "_comment": [
+    "The pipeline contract: what other code actually reads.",
+    "",
+    "Every rule names its consumer, because that is what makes it a contract",
+    "rather than a preference. A rule with no consumer does not belong here --",
+    "the documents this replaces claimed several, and enumerating them found",
+    "no reader at all for alpha.py, backtest.py, plot.py, the PNG names, the",
+    "portfolio parquets, or the frontmatter keys author and revision.",
+    "",
+    "This file is the source of truth. CONTRACT.md is generated from it by",
+    "`python ops/pipeline/check.py --emit-doc`, so the two cannot drift -- which",
+    "is the failure being fixed: the prose said in bold that status must not be",
+    "'success', 'fail' or 'review', while the dashboard accepted all three."
+  ],
+  "rules": [
+    {
+      "id": "strategy-dir-dated",
+      "applies_to": "strategy",
+      "check": "dir_name_matches",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}_",
+      "consumer": "apps/web/.../StrategyDashboardPane.tsx:19,152",
+      "breaks": "The dashboard filters on the date prefix. Without it the strategy is never listed.",
+      "silent": true
+    },
+    {
+      "id": "summary-present",
+      "applies_to": "both",
+      "check": "file_exists",
+      "path": "summary.md",
+      "consumer": "StrategyDashboardPane.tsx:159,162,232; WorkspacePage.tsx:418; remark-wikilink.ts:95",
+      "breaks": "The dashboard has nothing to show and wikilinks to this directory do not resolve.",
+      "silent": true
+    },
+    {
+      "id": "summary-frontmatter",
+      "applies_to": "both",
+      "check": "frontmatter_keys",
+      "path": "summary.md",
+      "required": ["status", "name", "created_at", "last_updated"],
+      "consumer": "StrategyDashboardPane.tsx; apps/mcp/src/indexer.ts:33,48,95-96",
+      "breaks": "A missing key drops the entry from the dashboard listing or the knowledge-base index.",
+      "silent": true
+    },
+    {
+      "id": "summary-status-value",
+      "applies_to": "both",
+      "check": "frontmatter_enum",
+      "path": "summary.md",
+      "key": "status",
+      "allowed": [
+        "pass",
+        "passed",
+        "success",
+        "successful",
+        "failed",
+        "fail",
+        "failing",
+        "rejected",
+        "keep-in-review",
+        "review",
+        "in-review",
+        "pending",
+        "inconclusive"
+      ],
+      "canonical": ["pass", "failed", "keep-in-review"],
+      "consumer": "StrategyDashboardPane.tsx:38-52 (STATUS_ALIASES)",
+      "breaks": "An unrecognised status is dropped from the dashboard filter entirely.",
+      "silent": true,
+      "note": "The shipped pipelines assert in bold that success/fail/review must NOT be used. That is false: STATUS_ALIASES accepts all thirteen spellings above. The prohibition over-restricts, so obeying it is harmless, but it is not the contract."
+    },
+    {
+      "id": "report-parquet-present",
+      "applies_to": "strategy",
+      "check": "file_exists",
+      "path": "report.parquet",
+      "consumer": "ReportPanel.tsx:56-57,83-84,1047,1057",
+      "breaks": "The report panel reports 'No report found'.",
+      "silent": true
+    },
+    {
+      "id": "portfolio-entrypoint",
+      "applies_to": "portfolio",
+      "check": "async_def_exists",
+      "path": "portfolio.py",
+      "function": "setup_portfolio",
+      "params": ["start_time", "end_time", "live"],
+      "consumer": "nyrobrain.portfolio.run:74,77-107 (load_setup_portfolio, call_setup_portfolio); nyrobrain.prime.bundle:117 (nyrobrain_alpha_files)",
+      "breaks": "The publisher cannot start. A synchronous def fails before the helpful error in call_setup_portfolio and reports something less useful.",
+      "silent": false
+    },
+    {
+      "id": "portfolio-alpha-literals",
+      "applies_to": "portfolio",
+      "check": "quoted_paths_present",
+      "path": "portfolio.py",
+      "pattern": "brain/strategy/",
+      "consumer": "nyrobrain.prime.bundle:41 (_STRATEGY_REF_RE)",
+      "breaks": "Deployment selects alpha files by regex-scraping quoted brain/strategy/... literals out of the source. A literal is found whether it sits at the call site or in a variable; a path composed at runtime (Path(...) / name, os.path.join) matches nothing and that alpha silently does not ship, and an f-string matches the literal text brain/strategy/{name}/alpha.py so the bundler hunts a file that cannot exist.",
+      "silent": true
+    }
+  ],
+  "methodology": {
+    "_comment": "Not contract. The user's to change, and saying so matters as much as the list above -- a user who believes every filename is load-bearing will not change the one thing they should.",
+    "free": [
+      "The train/test split, and its ratio.",
+      "Which metrics are computed and what counts as a pass.",
+      "The narrative structure and prose of summary.md.",
+      "File names inside the directory: alpha.py, backtest.py, plot.py, assets/.",
+      "Every chart and its filename. No code reads any PNG name.",
+      "The four portfolio parquets. No reader was found for any of them.",
+      "The frontmatter keys author and revision. No reader."
+    ]
+  }
+}

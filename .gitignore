@@ -1,0 +1,48 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.ruff_cache/
+
+# Virtual environments
+.venv
+
+.DS_Store
+
+credentials.json
+secrets.*
+.env*
+!.env.example
+outdir/
+*.parquet
+.claude/
+*.tar.gz
+.snapshots/
+
+# OMS paper-trade live config carries exchange + prime secrets
+config.json
+brain/portfolio/**/config.json
+
+# OMS run logs (kept on the PVC, not committed)
+oms/logs/
+
+node_modules/
+
+# Bulky/regenerable data. `*.parquet*` also catches compressed and partitioned
+# forms (`.parquet.gz`, `.parquet.snappy`, `data.parquet/part-0`) that the plain
+# `*.parquet` above misses.
+*.parquet*
+*.npz
+
+# .opencode-snapshot/ holds the opencode session database — the full chat
+# history — and is rewritten every ~20s by the snapshot scheduler. Committing it
+# would publish conversations to the user's remote and thrash the repo.
+# .opencode-data/ is treated as secret-bearing (see apps/api/src/security/prompt.ts).
+.opencode-snapshot/
+.opencode-data/
+
+# --- nyrobrain (managed) ---
+.nyrobrain/

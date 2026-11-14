@@ -1,0 +1,14 @@
+.claude/
+.ruff_cache/
+outdir/
+.nyroignore
+opencode.json
+__pycache__/
+.DS_Store
+opencode_snapshot.tar.gz
+.snapshots/
+.nyrobrain/
+.opencode-data/
+.opencode/
+SOUL.md
+AGENTS-core.md
